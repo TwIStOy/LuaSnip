@@ -329,6 +329,10 @@ function TSParser:match_at(match_opts, pos)
 		query:iter_matches(root, self.source, root_from_line, root_to_line + 1)
 
 	for match, node in match_opts.generator(query, next_ts_match) do
+		if type(node) == "table" then
+			-- iter_matches now returns all matching nodes in a match, but we only want the last one.
+      node = node[#node]
+		end
 		-- false: don't include bytes.
 		local _, _, end_row, end_col = node:range(false)
 		if end_row == pos[1] and end_col == pos[2] then

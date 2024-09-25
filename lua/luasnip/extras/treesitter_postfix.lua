@@ -166,6 +166,10 @@ local function generate_resolve_expand_param(match_tsnode, user_resolver)
 			LS_TSDATA = {},
 		}
 		for capture_name, node in pairs(best_match) do
+			if type(node) == "table" then
+				node = node[#node]
+			end
+
 			env["LS_TSCAPTURE_" .. capture_name:upper()] =
 				vim.split(ts_parser:get_node_text(node), "\n")
 
